@@ -1,5 +1,5 @@
 # Docker Compose para Sistema de Passagens Rodoviárias
-# Usa o MySQL que já está rodando no container mysql-container
+# Conecta ao MySQL que já está rodando (mysql-container)
 
 services:
   # Aplicação Tomcat
@@ -22,13 +22,17 @@ services:
       JAVA_OPTS: "-Xms256m -Xmx512m -XX:+UseG1GC"
     ports:
       - "8080:8080"
-    # Conecta à rede padrão do Docker para acessar mysql-container
-    network_mode: "bridge"
-    external_links:
-      - mysql-container
+    # Usa a mesma rede do mysql-container
+    networks:
+      - mysql_default
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/passagens-rodoviarias/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 90s
+
+# Conecta à rede externa onde o MySQL está
+networks:
+  mysql_default:
+    external: true
