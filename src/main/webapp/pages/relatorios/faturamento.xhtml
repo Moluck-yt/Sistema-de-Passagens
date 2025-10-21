@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="title">Consulta de Faturamento</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Relatório de Faturamento por Período</h2>
+
+            <h:form id="form">
+                <!-- Filtros de Consulta -->
+                <p:panel header="Filtros de Consulta" style="margin-bottom: 20px;">
+                    <h:panelGrid columns="4" cellpadding="10" style="width: 100%">
+                        <p:outputLabel for="dataInicio" value="Data Início:"/>
+                        <p:calendar id="dataInicio"
+                                   value="#{relatorioBean.dataInicio}"
+                                   pattern="dd/MM/yyyy"
+                                   showButtonBar="true"
+                                   locale="pt_BR"
+                                   required="true"
+                                   requiredMessage="Data início é obrigatória"
+                                   style="width: 100%"/>
+
+                        <p:outputLabel for="dataFim" value="Data Fim:"/>
+                        <p:calendar id="dataFim"
+                                   value="#{relatorioBean.dataFim}"
+                                   pattern="dd/MM/yyyy"
+                                   showButtonBar="true"
+                                   locale="pt_BR"
+                                   required="true"
+                                   requiredMessage="Data fim é obrigatória"
+                                   style="width: 100%"/>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Consultar"
+                                        action="#{relatorioBean.consultarFaturamento()}"
+                                        update="form:resumo form:dataTable form:messages"
+                                        icon="pi pi-search"
+                                        styleClass="ui-button-success"/>
+
+                        <p:commandButton value="Limpar"
+                                        action="#{relatorioBean.limparFaturamento()}"
+                                        update="form"
+                                        icon="pi pi-times"
+                                        styleClass="ui-button-secondary"
+                                        process="@this"/>
+                    </f:facet>
+                </p:panel>
+
+                <p:messages id="messages" showDetail="true" closable="true"/>
+
+                <!-- Resumo do Faturamento -->
+                <p:panel id="resumo" header="Resumo" style="margin-bottom: 20px;"
+                        rendered="#{not empty relatorioBean.passagensVendidas}">
+                    <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                        <h:outputText value="Total de Passagens Vendidas:" style="font-weight: bold"/>
+                        <h:outputText value="#{relatorioBean.passagensVendidas.size()}"
+                                     style="font-size: 18px; color: #667eea"/>
+
+                        <h:outputText value="Faturamento Total:" style="font-weight: bold"/>
+                        <h:outputText value="#{relatorioBean.faturamentoTotal}"
+                                     style="font-size: 24px; color: #48bb78; font-weight: bold">
+                            <f:convertNumber type="currency" currencySymbol="R$ "/>
+                        </h:outputText>
+                    </h:panelGrid>
+                </p:panel>
+
+                <!-- Tabela de Passagens Vendidas -->
+                <p:dataTable id="dataTable"
+                            value="#{relatorioBean.passagensVendidas}"
+                            var="passagem"
+                            paginator="true"
+                            rows="10"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15,20"
+                            emptyMessage="Nenhuma passagem vendida no período selecionado"
+                            styleClass="data-table">
+
+                    <f:facet name="header">
+                        Passagens Vendidas no Período
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{passagem.idPassagem}">
+                        <h:outputText value="#{passagem.idPassagem}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Venda" sortBy="#{passagem.dataVenda}">
+                        <h:outputText value="#{passagem.dataVenda}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Data Saída" sortBy="#{passagem.dataSaida}">
+                        <h:outputText value="#{passagem.dataSaida}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Hora" sortBy="#{passagem.horaSaida}">
+                        <h:outputText value="#{passagem.horaSaida}"/>
+                    </p:column>
+
+                    <p:column headerText="Veículo" sortBy="#{passagem.veiculo.numero}">
+                        <h:outputText value="#{passagem.veiculo.numero} - #{passagem.veiculo.placa}"/>
+                    </p:column>
+
+                    <p:column headerText="Poltrona" sortBy="#{passagem.poltrona}">
+                        <h:outputText value="#{passagem.poltrona}"/>
+                    </p:column>
+
+                    <p:column headerText="Roteiro">
+                        <h:outputText value="#{passagem.roteiro}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor" sortBy="#{passagem.valorPassagem}">
+                        <h:outputText value="#{passagem.valorPassagem}">
+                            <f:convertNumber type="currency" currencySymbol="R$ "/>
+                        </h:outputText>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:outputText value="Total: #{relatorioBean.faturamentoTotal}"
+                                     style="font-weight: bold">
+                            <f:convertNumber type="currency" currencySymbol="R$ "/>
+                        </h:outputText>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

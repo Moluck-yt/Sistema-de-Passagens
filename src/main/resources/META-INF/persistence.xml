@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+
+    <persistence-unit name="PassagensRodoviariaPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- Classes de Entidades -->
+        <class>br.com.cairu.model.Usuario</class>
+        <class>br.com.cairu.model.Cidade</class>
+        <class>br.com.cairu.model.Veiculo</class>
+        <class>br.com.cairu.model.Passagem</class>
+
+        <properties>
+            <!-- Configurações do Banco de Dados MySQL -->
+            <!-- Usa variáveis de ambiente do Docker, com fallback para localhost -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:passagens_rodoviarias}?createDatabaseIfNotExist=true&amp;useSSL=false&amp;serverTimezone=America/Sao_Paulo&amp;allowPublicKeyRetrieval=true"/>
+            <property name="jakarta.persistence.jdbc.user" value="${DB_USER:root}"/>
+            <property name="jakarta.persistence.jdbc.password" value="${DB_PASSWORD:rootmoluck}"/>
+
+            <!-- Configurações do Hibernate -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+
+            <!-- Manter compatibilidade com nomenclatura Hibernate 5 (camelCase em vez de snake_case) -->
+            <property name="hibernate.physical_naming_strategy" value="org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"/>
+
+            <!-- HikariCP Connection Pool -->
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.hikari.minimumIdle" value="5"/>
+            <property name="hibernate.hikari.maximumPoolSize" value="20"/>
+            <property name="hibernate.hikari.idleTimeout" value="300000"/>
+            <property name="hibernate.hikari.connectionTimeout" value="20000"/>
+        </properties>
+    </persistence-unit>
+</persistence>

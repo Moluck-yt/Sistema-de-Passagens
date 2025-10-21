@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><ui:insert name="title">Sistema de Passagens Rodoviárias</ui:insert></title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+    <f:event type="preRenderView" listener="#{loginBean.verificarSessao()}"/>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Sistema de Passagens Rodoviárias</h1>
+            <h:form>
+                <div class="user-info">
+                    <span>Bem-vindo, <strong>#{loginBean.usuarioLogado.nome}</strong></span>
+                    <p:commandButton value="Sair" icon="pi pi-sign-out"
+                                    action="#{loginBean.logout()}"
+                                    styleClass="btn-logout"/>
+                </div>
+            </h:form>
+        </div>
+    </div>
+
+    <!-- Menu de navegação -->
+    <div class="nav-menu">
+        <ul>
+            <li><h:link outcome="/index"><i class="pi pi-home" style="margin-right: 5px;"></i>Início</h:link></li>
+            <li><h:link outcome="/pages/cidades/cidades"><i class="pi pi-map-marker" style="margin-right: 5px;"></i>Cidades</h:link></li>
+            <li><h:link outcome="/pages/veiculos/veiculos"><i class="pi pi-car" style="margin-right: 5px;"></i>Veículos</h:link></li>
+            <li><h:link outcome="/pages/passagens/passagens"><i class="pi pi-ticket" style="margin-right: 5px;"></i>Passagens</h:link></li>
+            <li><h:link outcome="/pages/relatorios/faturamento"><i class="pi pi-chart-line" style="margin-right: 5px;"></i>Faturamento</h:link></li>
+            <li><h:link outcome="/pages/relatorios/roteiro"><i class="pi pi-compass" style="margin-right: 5px;"></i>Roteiros</h:link></li>
+        </ul>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="container">
+        <p:messages id="messages" showDetail="true" closable="true"/>
+        <ui:insert name="content">
+            Conteúdo padrão
+        </ui:insert>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Sistema de Passagens Rodoviárias - Equipe 1 (Rodrigo, Gabriel Kauan, Guilherme Teixeira)</p>
+        <p>Projeto Integrador - 2025</p>
+    </div>
+
+</h:body>
+</html>

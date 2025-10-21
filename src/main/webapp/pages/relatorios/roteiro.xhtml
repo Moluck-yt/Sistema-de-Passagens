@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="title">Consulta por Roteiro</ui:define>
+
+    <ui:define name="content">
+        <div class="card">
+            <h2 class="card-title">Consulta de Passagens por Roteiro</h2>
+
+            <h:form id="form">
+                <!-- Filtros de Consulta -->
+                <p:panel header="Selecione o Roteiro" style="margin-bottom: 20px;">
+                    <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                        <p:outputLabel for="cidadeOrigem" value="Cidade Origem:"/>
+                        <p:selectOneMenu id="cidadeOrigem"
+                                        value="#{relatorioBean.cidadeOrigem}"
+                                        converter="omnifaces.SelectItemsConverter"
+                                        required="true"
+                                        requiredMessage="Cidade de origem é obrigatória"
+                                        style="width: 100%"
+                                        filter="true"
+                                        filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                            <f:selectItems value="#{relatorioBean.cidades}"
+                                          var="c"
+                                          itemValue="#{c}"
+                                          itemLabel="#{c.nomeCidade} - #{c.uf}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="cidadeDestino" value="Cidade Destino:"/>
+                        <p:selectOneMenu id="cidadeDestino"
+                                        value="#{relatorioBean.cidadeDestino}"
+                                        converter="omnifaces.SelectItemsConverter"
+                                        required="true"
+                                        requiredMessage="Cidade de destino é obrigatória"
+                                        style="width: 100%"
+                                        filter="true"
+                                        filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                            <f:selectItems value="#{relatorioBean.cidades}"
+                                          var="c"
+                                          itemValue="#{c}"
+                                          itemLabel="#{c.nomeCidade} - #{c.uf}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Consultar"
+                                        action="#{relatorioBean.consultarPassagensPorRoteiro()}"
+                                        update="form:dataTable form:messages"
+                                        icon="pi pi-search"
+                                        styleClass="ui-button-success"/>
+
+                        <p:commandButton value="Limpar"
+                                        action="#{relatorioBean.limparRoteiro()}"
+                                        update="form"
+                                        icon="pi pi-times"
+                                        styleClass="ui-button-secondary"
+                                        process="@this"/>
+                    </f:facet>
+                </p:panel>
+
+                <p:messages id="messages" showDetail="true" closable="true"/>
+
+                <!-- Tabela de Passagens -->
+                <p:dataTable id="dataTable"
+                            value="#{relatorioBean.passagensPorRoteiro}"
+                            var="passagem"
+                            paginator="true"
+                            rows="10"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="5,10,15,20"
+                            emptyMessage="Nenhuma passagem encontrada para este roteiro"
+                            styleClass="data-table">
+
+                    <f:facet name="header">
+                        Passagens Vendidas para o Roteiro Selecionado
+                    </f:facet>
+
+                    <p:column headerText="ID" sortBy="#{passagem.idPassagem}">
+                        <h:outputText value="#{passagem.idPassagem}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Venda" sortBy="#{passagem.dataVenda}">
+                        <h:outputText value="#{passagem.dataVenda}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Data Saída" sortBy="#{passagem.dataSaida}">
+                        <h:outputText value="#{passagem.dataSaida}">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Hora Saída" sortBy="#{passagem.horaSaida}">
+                        <h:outputText value="#{passagem.horaSaida}"/>
+                    </p:column>
+
+                    <p:column headerText="Veículo" sortBy="#{passagem.veiculo.numero}">
+                        <h:outputText value="#{passagem.veiculo.numero} - #{passagem.veiculo.placa}"/>
+                    </p:column>
+
+                    <p:column headerText="Modelo">
+                        <h:outputText value="#{passagem.veiculo.modelo}"/>
+                    </p:column>
+
+                    <p:column headerText="Motorista">
+                        <h:outputText value="#{passagem.veiculo.motorista}"/>
+                    </p:column>
+
+                    <p:column headerText="Poltrona" sortBy="#{passagem.poltrona}">
+                        <h:outputText value="#{passagem.poltrona}"/>
+                    </p:column>
+
+                    <p:column headerText="Valor" sortBy="#{passagem.valorPassagem}">
+                        <h:outputText value="#{passagem.valorPassagem}">
+                            <f:convertNumber type="currency" currencySymbol="R$ "/>
+                        </h:outputText>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <h:outputText value="Total de passagens: #{relatorioBean.passagensPorRoteiro.size()}"
+                                     style="font-weight: bold"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>

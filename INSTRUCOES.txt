@@ -1,0 +1,286 @@
+================================================================================
+  SISTEMA DE PASSAGENS RODOVIÁRIAS - INSTRUÇÕES DE EXECUÇÃO
+================================================================================
+
+Equipe 1: Rodrigo, Gabriel Kauan, Guilherme Teixeira
+Professor: Andre Guimarães Portugal
+Disciplina: Desenvolvimento de Aplicações
+Ano: 2025
+
+================================================================================
+  INÍCIO RÁPIDO - DOCKER (RECOMENDADO)
+================================================================================
+
+PASSO 1: Verificar se o Docker está instalado
+----------------------------------------------
+$ docker --version
+$ docker-compose --version
+
+Se não estiver instalado, visite: https://docs.docker.com/get-docker/
+
+
+PASSO 2: Executar a aplicação
+------------------------------
+$ cd Cairu
+$ ./docker-build.sh
+
+O script irá:
+- Construir a imagem Docker
+- Iniciar o container
+- Conectar ao MySQL existente (mysql-container)
+- Aguardar a aplicação ficar pronta
+
+
+PASSO 3: Acessar o sistema
+---------------------------
+URL: http://localhost:8080/passagens-rodoviarias/
+
+CREDENCIAIS:
+  Login: admin
+  Senha: 123456
+
+
+PASSO 4: Parar a aplicação
+---------------------------
+$ docker stop passagens-app
+
+OU
+
+$ ./docker-stop.sh
+
+
+================================================================================
+  INSTALAÇÃO MANUAL (SEM DOCKER)
+================================================================================
+
+PRÉ-REQUISITOS:
+  - JDK 11 ou superior
+  - Maven 3.6+
+  - MySQL 8.0+
+  - Tomcat 10+
+
+PASSO 1: Configurar MySQL
+--------------------------
+Execute no MySQL:
+
+  CREATE DATABASE passagens_rodoviarias;
+  USE passagens_rodoviarias;
+
+  INSERT INTO usuarios (nome, cargo, login, senha, email)
+  VALUES ('Administrador', 'Gerente', 'admin', '123456',
+          'admin@passagens.com');
+
+
+PASSO 2: Configurar persistence.xml
+------------------------------------
+Edite: src/main/resources/META-INF/persistence.xml
+
+Ajuste a URL, usuário e senha do MySQL conforme seu ambiente.
+
+
+PASSO 3: Compilar o projeto
+----------------------------
+$ cd Cairu
+$ mvn clean package
+
+O arquivo WAR será gerado em: target/passagens-rodoviarias.war
+
+
+PASSO 4: Deploy no Tomcat
+--------------------------
+Copie o WAR para o Tomcat:
+
+$ sudo cp target/passagens-rodoviarias.war /var/lib/tomcat10/webapps/
+$ sudo systemctl restart tomcat10
+
+
+PASSO 5: Acessar
+-----------------
+URL: http://localhost:8080/passagens-rodoviarias/
+
+CREDENCIAIS:
+  Login: admin
+  Senha: 123456
+
+
+================================================================================
+  ESTRUTURA DO PROJETO
+================================================================================
+
+Cairu/
+├── src/main/java/br/com/cairu/
+│   ├── model/          # Entidades JPA (Usuario, Cidade, Veiculo, Passagem)
+│   ├── dao/            # DAOs (GenericDAO + específicos)
+│   ├── bean/           # Managed Beans (Controllers JSF)
+│   └── util/           # Utilitários (JPAUtil)
+├── src/main/webapp/
+│   ├── pages/          # Páginas XHTML
+│   ├── resources/css/  # Estilos
+│   └── WEB-INF/        # Configurações
+├── Dockerfile          # Imagem Docker
+├── docker-compose.yml  # Orquestração
+├── docker-build.sh     # Script de deploy automatizado
+├── pom.xml             # Dependências Maven
+└── README.md           # Documentação completa
+
+
+================================================================================
+  FUNCIONALIDADES IMPLEMENTADAS
+================================================================================
+
+✅ Autenticação de usuários
+✅ CRUD de Cidades (Cadastrar, Editar, Excluir, Listar)
+✅ CRUD de Veículos (Cadastrar, Editar, Excluir, Listar)
+✅ Venda de Passagens com validações:
+   - Poltrona não pode exceder limite do veículo
+   - Poltrona não pode ser vendida duas vezes (mesmo veículo/data/hora)
+   - Origem e destino devem ser diferentes
+✅ Relatório de Faturamento por Período
+✅ Relatório de Passagens por Roteiro
+✅ Interface moderna com PrimeFaces
+✅ Validações de dados com Bean Validation
+✅ Template responsivo
+
+
+================================================================================
+  TECNOLOGIAS UTILIZADAS
+================================================================================
+
+Backend:
+  - Java 11
+  - Jakarta EE 9+
+  - JSF 3.0.3 (Mojarra)
+  - Hibernate 6.1.7
+  - JPA 3.1.0
+  - CDI (Weld 4.0.3)
+
+Frontend:
+  - PrimeFaces 13.0.0 (jakarta)
+  - OmniFaces 4.0
+  - HTML5/CSS3
+
+Banco de Dados:
+  - MySQL 8.0
+  - HikariCP (Connection Pool)
+
+Build & Deploy:
+  - Maven 3.9
+  - Tomcat 10.1
+  - Docker
+
+
+================================================================================
+  COMANDOS ÚTEIS - DOCKER
+================================================================================
+
+# Ver logs da aplicação
+docker logs -f passagens-app
+
+# Parar aplicação
+docker stop passagens-app
+
+# Reiniciar aplicação
+docker restart passagens-app
+
+# Remover container
+docker rm -f passagens-app
+
+# Rebuild completo
+docker-compose build --no-cache
+
+# Ver status
+docker ps
+
+# Acessar bash do container
+docker exec -it passagens-app bash
+
+
+================================================================================
+  COMANDOS ÚTEIS - MAVEN
+================================================================================
+
+# Compilar
+mvn clean package
+
+# Compilar sem testes
+mvn clean package -DskipTests
+
+# Limpar target
+mvn clean
+
+# Ver dependências
+mvn dependency:tree
+
+
+================================================================================
+  SOLUÇÃO DE PROBLEMAS
+================================================================================
+
+PROBLEMA: Porta 8080 já em uso
+SOLUÇÃO: Pare o Tomcat local ou mude a porta no docker-compose.yml
+
+PROBLEMA: Erro de conexão com MySQL
+SOLUÇÃO: Verifique se o container mysql-container está rodando
+         $ docker ps | grep mysql
+
+PROBLEMA: Aplicação não inicia
+SOLUÇÃO: Veja os logs:
+         $ docker logs passagens-app
+
+PROBLEMA: Tabelas não criadas
+SOLUÇÃO: O Hibernate cria automaticamente (hibernate.hbm2ddl.auto=update)
+
+
+================================================================================
+  CREDENCIAIS PADRÃO
+================================================================================
+
+Banco de Dados MySQL:
+  Host: localhost
+  Porta: 3306
+  Database: passagens_rodoviarias
+  Usuário: root
+  Senha: rootmoluck
+
+Aplicação Web:
+  Login: admin
+  Senha: 123456
+
+
+================================================================================
+  ARQUIVOS DE DOCUMENTAÇÃO
+================================================================================
+
+README.md           - Documentação completa do projeto
+README-DOCKER.md    - Guia detalhado do Docker
+INSTRUCOES.txt      - Este arquivo (guia rápido)
+
+
+================================================================================
+  OBSERVAÇÕES IMPORTANTES
+================================================================================
+
+⚠️ Este é um projeto ACADÊMICO. Para uso em produção:
+   - Implementar hash de senhas (BCrypt)
+   - Adicionar HTTPS/SSL
+   - Implementar sistema de roles/permissões
+   - Melhorar tratamento de exceções
+
+⚠️ Senhas armazenadas em TEXTO PLANO (apenas para fins didáticos)
+
+⚠️ O persistence.xml usa variáveis de ambiente para Docker.
+   Se usar instalação manual, ajuste as configurações.
+
+
+================================================================================
+  CONTATO
+================================================================================
+
+Para dúvidas sobre o projeto, entre em contato com:
+  - Equipe 1 (Rodrigo, Gabriel Kauan, Guilherme Teixeira)
+  - Professor Andre Guimarães Portugal
+
+
+================================================================================
+  FIM DAS INSTRUÇÕES
+================================================================================

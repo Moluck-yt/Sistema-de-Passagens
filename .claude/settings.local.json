@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker exec mysql-container mysql -uroot -prootmoluck passagens_rodoviarias -e \"DESCRIBE usuarios;\")",
+      "Bash(docker exec mysql-container mysql -uroot -prootmoluck passagens_rodoviarias -e \"SELECT id, nome, login, email FROM usuarios;\")",
+      "Bash(docker exec mysql-container mysql -uroot -prootmoluck passagens_rodoviarias -e \"SELECT COUNT(*) as total FROM usuarios;\")",
+      "Bash(docker exec mysql-container mysql -uroot -prootmoluck passagens_rodoviarias -e \"\nINSERT INTO usuarios (nome, cargo, login, senha, email) \nVALUES (''''Administrador'''', ''''Gerente'''', ''''admin'''', ''''123456'''', ''''admin@passagens.com'''');\n\")",
+      "Bash(docker exec mysql-container mysql -uroot -prootmoluck passagens_rodoviarias -e \"SELECT id, nome, cargo, login, email FROM usuarios;\")",
+      "Bash(chmod +x /home/moluck/Develops/Java/Cairu/docker-build.sh /home/moluck/Develops/Java/Cairu/docker-stop.sh)",
+      "Bash(test -f /home/moluck/Develops/Java/Cairu/.gitignore)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
