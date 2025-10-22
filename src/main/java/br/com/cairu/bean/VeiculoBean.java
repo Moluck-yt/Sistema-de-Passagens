@@ -68,12 +68,19 @@ public class VeiculoBean implements Serializable {
 
     public void excluir() {
         try {
+            // Verificar se o veiculo possui passagens cadastradas
+            if (veiculoDAO.temPassagens(veiculo.getId())) {
+                addMessage("Nao e possivel excluir este veiculo pois existem passagens cadastradas para ele!",
+                          FacesMessage.SEVERITY_WARN);
+                return;
+            }
+
             veiculoDAO.excluir(veiculo.getId());
-            addMessage("Veículo excluído com sucesso!", FacesMessage.SEVERITY_INFO);
+            addMessage("Veiculo excluido com sucesso!", FacesMessage.SEVERITY_INFO);
             limpar();
             carregarVeiculos();
         } catch (Exception e) {
-            addMessage("Erro ao excluir veículo: " + e.getMessage(), FacesMessage.SEVERITY_ERROR);
+            addMessage("Erro ao excluir veiculo: " + e.getMessage(), FacesMessage.SEVERITY_ERROR);
         }
     }
 
@@ -83,6 +90,10 @@ public class VeiculoBean implements Serializable {
 
     public void limpar() {
         veiculo = new Veiculo();
+    }
+
+    public void prepararEdicao(Veiculo veiculo) {
+        this.veiculo = veiculo;
     }
 
     private void addMessage(String mensagem, FacesMessage.Severity severity) {

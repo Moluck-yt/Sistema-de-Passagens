@@ -13,29 +13,29 @@
             <h2 class="card-title">Gerenciamento de Cidades</h2>
 
             <h:form id="form">
-                <!-- Formulário de Cadastro/Edição -->
-                <p:panel header="#{cidadeBean.cidade.id == null ? 'Nova Cidade' : 'Editar Cidade'}"
+                <!-- Formulario de Cadastro -->
+                <p:panel header="Nova Cidade"
                         style="margin-bottom: 20px;">
                     <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
                         <p:outputLabel for="nomeCidade" value="Nome da Cidade:"/>
                         <p:inputText id="nomeCidade"
                                     value="#{cidadeBean.cidade.nomeCidade}"
                                     required="true"
-                                    requiredMessage="Nome da cidade é obrigatório"
+                                    requiredMessage="Nome da cidade e obrigatorio"
                                     style="width: 100%"/>
 
-                        <p:outputLabel for="idCidade" value="Código IBGE:"/>
+                        <p:outputLabel for="idCidade" value="Codigo IBGE:"/>
                         <p:inputText id="idCidade"
                                     value="#{cidadeBean.cidade.idCidade}"
                                     required="true"
-                                    requiredMessage="Código IBGE é obrigatório"
+                                    requiredMessage="Codigo IBGE e obrigatorio"
                                     style="width: 100%"/>
 
                         <p:outputLabel for="uf" value="UF:"/>
                         <p:inputText id="uf"
                                     value="#{cidadeBean.cidade.uf}"
                                     required="true"
-                                    requiredMessage="UF é obrigatória"
+                                    requiredMessage="UF e obrigatoria"
                                     maxlength="2"
                                     style="width: 100%; text-transform: uppercase"/>
                     </h:panelGrid>
@@ -56,7 +56,7 @@
                     </f:facet>
                 </p:panel>
 
-                <p:messages id="messages" showDetail="true" closable="true"/>
+                <p:messages id="messages" showSummary="true" showDetail="false" closable="true"/>
 
                 <!-- Tabela de Cidades -->
                 <p:dataTable id="dataTable"
@@ -81,7 +81,7 @@
                         <h:outputText value="#{cidade.nomeCidade}"/>
                     </p:column>
 
-                    <p:column headerText="Código IBGE" sortBy="#{cidade.idCidade}">
+                    <p:column headerText="Codigo IBGE" sortBy="#{cidade.idCidade}">
                         <h:outputText value="#{cidade.idCidade}"/>
                     </p:column>
 
@@ -89,22 +89,17 @@
                         <h:outputText value="#{cidade.uf}"/>
                     </p:column>
 
-                    <p:column headerText="Ações" style="width: 150px; text-align: center">
-                        <p:commandButton icon="pi pi-pencil"
-                                        action="#{cidadeBean.editar(cidade)}"
-                                        update="form"
-                                        styleClass="ui-button-warning"
-                                        title="Editar"/>
-
+                    <p:column headerText="Acoes" style="width: 150px; text-align: center">
                         <p:commandButton icon="pi pi-trash"
                                         action="#{cidadeBean.excluir()}"
                                         update="form:dataTable form:messages"
+                                        process="@this"
                                         styleClass="ui-button-danger"
                                         title="Excluir"
                                         style="margin-left: 5px">
                             <f:setPropertyActionListener value="#{cidade}"
                                                         target="#{cidadeBean.cidade}"/>
-                            <p:confirm header="Confirmação"
+                            <p:confirm header="Confirmacao"
                                       message="Deseja realmente excluir esta cidade?"
                                       icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
@@ -113,9 +108,53 @@
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
+                    <p:commandButton value="Nao" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
                 </p:confirmDialog>
             </h:form>
+
+            <!-- Dialog de Edicao -->
+            <p:dialog header="Editar Cidade" widgetVar="editDialogCidade" modal="true" width="600" responsive="true" appendTo="@(body)">
+                <h:form id="editFormCidade">
+                    <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                        <p:outputLabel for="editNomeCidade" value="Nome da Cidade:"/>
+                        <p:inputText id="editNomeCidade"
+                                    value="#{cidadeBean.cidade.nomeCidade}"
+                                    required="true"
+                                    requiredMessage="Nome da cidade e obrigatorio"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editIdCidade" value="Codigo IBGE:"/>
+                        <p:inputText id="editIdCidade"
+                                    value="#{cidadeBean.cidade.idCidade}"
+                                    required="true"
+                                    requiredMessage="Codigo IBGE e obrigatorio"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editUf" value="UF:"/>
+                        <p:inputText id="editUf"
+                                    value="#{cidadeBean.cidade.uf}"
+                                    required="true"
+                                    requiredMessage="UF e obrigatoria"
+                                    maxlength="2"
+                                    style="width: 100%; text-transform: uppercase"/>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Salvar"
+                                        action="#{cidadeBean.salvar()}"
+                                        update=":form:dataTable :form:messages"
+                                        oncomplete="PF('editDialogCidade').hide()"
+                                        icon="pi pi-check"
+                                        styleClass="ui-button-success"/>
+
+                        <p:commandButton value="Cancelar"
+                                        onclick="PF('editDialogCidade').hide()"
+                                        type="button"
+                                        icon="pi pi-times"
+                                        styleClass="ui-button-secondary"/>
+                    </f:facet>
+                </h:form>
+            </p:dialog>
         </div>
     </ui:define>
 </ui:composition>

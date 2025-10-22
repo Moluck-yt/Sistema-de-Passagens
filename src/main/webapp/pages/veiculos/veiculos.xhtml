@@ -13,8 +13,8 @@
             <h2 class="card-title">Gerenciamento de Veículos</h2>
 
             <h:form id="form">
-                <!-- Formulário de Cadastro/Edição -->
-                <p:panel header="#{veiculoBean.veiculo.id == null ? 'Novo Veículo' : 'Editar Veículo'}"
+                <!-- Formulario de Cadastro -->
+                <p:panel header="Novo Veiculo"
                         style="margin-bottom: 20px;">
                     <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
                         <p:outputLabel for="numero" value="Número:"/>
@@ -81,7 +81,7 @@
                     </f:facet>
                 </p:panel>
 
-                <p:messages id="messages" showDetail="true" closable="true"/>
+                <p:messages id="messages" showSummary="true" showDetail="false" closable="true"/>
 
                 <!-- Tabela de Veículos -->
                 <p:dataTable id="dataTable"
@@ -125,22 +125,17 @@
                     </p:column>
 
                     <p:column headerText="Ações" style="width: 150px; text-align: center">
-                        <p:commandButton icon="pi pi-pencil"
-                                        action="#{veiculoBean.editar(veiculo)}"
-                                        update="form"
-                                        styleClass="ui-button-warning"
-                                        title="Editar"/>
-
                         <p:commandButton icon="pi pi-trash"
                                         action="#{veiculoBean.excluir()}"
                                         update="form:dataTable form:messages"
+                                        process="@this"
                                         styleClass="ui-button-danger"
                                         title="Excluir"
                                         style="margin-left: 5px">
                             <f:setPropertyActionListener value="#{veiculo}"
                                                         target="#{veiculoBean.veiculo}"/>
-                            <p:confirm header="Confirmação"
-                                      message="Deseja realmente excluir este veículo?"
+                            <p:confirm header="Confirmacao"
+                                      message="Deseja realmente excluir este veiculo?"
                                       icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
                     </p:column>
@@ -151,6 +146,75 @@
                     <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
                 </p:confirmDialog>
             </h:form>
+
+            <!-- Dialog de Edicao -->
+            <p:dialog header="Editar Veiculo" widgetVar="editDialog" modal="true" width="600" responsive="true" appendTo="@(body)">
+                <h:form id="editForm">
+                    <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                        <p:outputLabel for="editNumero" value="Numero:"/>
+                        <p:inputText id="editNumero"
+                                    value="#{veiculoBean.veiculo.numero}"
+                                    required="true"
+                                    requiredMessage="Numero e obrigatorio"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editPlaca" value="Placa:"/>
+                        <p:inputText id="editPlaca"
+                                    value="#{veiculoBean.veiculo.placa}"
+                                    required="true"
+                                    requiredMessage="Placa e obrigatoria"
+                                    style="width: 100%; text-transform: uppercase"/>
+
+                        <p:outputLabel for="editMotorista" value="Motorista:"/>
+                        <p:inputText id="editMotorista"
+                                    value="#{veiculoBean.veiculo.motorista}"
+                                    required="true"
+                                    requiredMessage="Nome do motorista e obrigatorio"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editModelo" value="Modelo:"/>
+                        <p:inputText id="editModelo"
+                                    value="#{veiculoBean.veiculo.modelo}"
+                                    required="true"
+                                    requiredMessage="Modelo e obrigatorio"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editDataCompra" value="Data de Compra:"/>
+                        <p:calendar id="editDataCompra"
+                                   value="#{veiculoBean.veiculo.dataCompra}"
+                                   pattern="dd/MM/yyyy"
+                                   required="true"
+                                   requiredMessage="Data de compra e obrigatoria"
+                                   showButtonBar="true"
+                                   locale="pt_BR"
+                                   style="width: 100%"/>
+
+                        <p:outputLabel for="editQtdPoltronas" value="Quantidade de Poltronas:"/>
+                        <p:inputNumber id="editQtdPoltronas"
+                                      value="#{veiculoBean.veiculo.qtdPoltronas}"
+                                      required="true"
+                                      requiredMessage="Quantidade de poltronas e obrigatoria"
+                                      decimalPlaces="0"
+                                      minValue="1"
+                                      style="width: 100%"/>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Salvar"
+                                        action="#{veiculoBean.salvar()}"
+                                        update=":form:dataTable :form:messages"
+                                        oncomplete="PF('editDialog').hide()"
+                                        icon="pi pi-check"
+                                        styleClass="ui-button-success"/>
+
+                        <p:commandButton value="Cancelar"
+                                        onclick="PF('editDialog').hide()"
+                                        type="button"
+                                        icon="pi pi-times"
+                                        styleClass="ui-button-secondary"/>
+                    </f:facet>
+                </h:form>
+            </p:dialog>
         </div>
     </ui:define>
 </ui:composition>

@@ -60,8 +60,15 @@ public class CidadeBean implements Serializable {
 
     public void excluir() {
         try {
+            // Verificar se a cidade possui passagens cadastradas
+            if (cidadeDAO.temPassagens(cidade.getId())) {
+                addMessage("Nao e possivel excluir esta cidade pois existem passagens cadastradas para ela!",
+                          FacesMessage.SEVERITY_WARN);
+                return;
+            }
+
             cidadeDAO.excluir(cidade.getId());
-            addMessage("Cidade excluída com sucesso!", FacesMessage.SEVERITY_INFO);
+            addMessage("Cidade excluida com sucesso!", FacesMessage.SEVERITY_INFO);
             limpar();
             carregarCidades();
         } catch (Exception e) {
@@ -75,6 +82,10 @@ public class CidadeBean implements Serializable {
 
     public void limpar() {
         cidade = new Cidade();
+    }
+
+    public void prepararEdicao(Cidade cidade) {
+        this.cidade = cidade;
     }
 
     private void addMessage(String mensagem, FacesMessage.Severity severity) {

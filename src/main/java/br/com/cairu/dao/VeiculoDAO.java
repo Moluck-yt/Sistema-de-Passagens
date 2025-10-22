@@ -53,8 +53,8 @@ public class VeiculoDAO extends GenericDAO<Veiculo, Long> {
     }
 
     /**
-     * Verifica se um veículo está disponível em uma data específica
-     * (não pode estar alocado para 2 roteiros na mesma data)
+     * Verifica se um veiculo esta disponivel em uma data especifica
+     * (nao pode estar alocado para 2 roteiros na mesma data)
      */
     public boolean isVeiculoDisponivelNaData(Long veiculoId, Date data) {
         EntityManager em = getEntityManager();
@@ -66,6 +66,22 @@ public class VeiculoDAO extends GenericDAO<Veiculo, Long> {
             query.setParameter("data", data);
             Long count = query.getSingleResult();
             return count == 0;
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Verifica se o veiculo possui passagens cadastradas
+     */
+    public boolean temPassagens(Long veiculoId) {
+        EntityManager em = getEntityManager();
+        try {
+            String jpql = "SELECT COUNT(p) FROM Passagem p WHERE p.veiculo.id = :veiculoId";
+            TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+            query.setParameter("veiculoId", veiculoId);
+            Long count = query.getSingleResult();
+            return count > 0;
         } finally {
             em.close();
         }

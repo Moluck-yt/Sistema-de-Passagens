@@ -13,8 +13,8 @@
             <h2 class="card-title">Gerenciamento de Passagens</h2>
 
             <h:form id="form">
-                <!-- Formulário de Cadastro/Edição -->
-                <p:panel header="#{passagemBean.passagem.idPassagem == null ? 'Nova Passagem' : 'Editar Passagem'}"
+                <!-- Formulario de Cadastro -->
+                <p:panel header="Nova Passagem"
                         style="margin-bottom: 20px;">
                     <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
                         <p:outputLabel for="veiculo" value="Veículo:"/>
@@ -119,7 +119,7 @@
                     </f:facet>
                 </p:panel>
 
-                <p:messages id="messages" showDetail="true" closable="true"/>
+                <p:messages id="messages" showSummary="true" showDetail="false" closable="true"/>
 
                 <!-- Tabela de Passagens -->
                 <p:dataTable id="dataTable"
@@ -174,22 +174,16 @@
                     </p:column>
 
                     <p:column headerText="Ações" style="width: 150px; text-align: center">
-                        <p:commandButton icon="pi pi-pencil"
-                                        action="#{passagemBean.editar(passagem)}"
-                                        update="form"
-                                        styleClass="ui-button-warning"
-                                        title="Editar"
-                                        disabled="#{passagem.vendida}"/>
-
                         <p:commandButton icon="pi pi-trash"
                                         action="#{passagemBean.excluir()}"
                                         update="form:dataTable form:messages"
+                                        process="@this"
                                         styleClass="ui-button-danger"
                                         title="Excluir"
                                         style="margin-left: 5px">
                             <f:setPropertyActionListener value="#{passagem}"
                                                         target="#{passagemBean.passagem}"/>
-                            <p:confirm header="Confirmação"
+                            <p:confirm header="Confirmacao"
                                       message="Deseja realmente excluir esta passagem?"
                                       icon="pi pi-exclamation-triangle"/>
                         </p:commandButton>
@@ -201,6 +195,122 @@
                     <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times"/>
                 </p:confirmDialog>
             </h:form>
+
+            <!-- Dialog de Edicao -->
+            <p:dialog header="Editar Passagem" widgetVar="editDialogPassagem" modal="true" width="700" responsive="true" appendTo="@(body)" dynamic="true">
+                <h:form id="editFormPassagem">
+                    <h:panelGrid columns="2" cellpadding="10" style="width: 100%">
+                        <p:outputLabel for="editVeiculo" value="Veiculo:"/>
+                        <p:selectOneMenu id="editVeiculo"
+                                        value="#{passagemBean.passagem.veiculo}"
+                                        converter="omnifaces.SelectItemsConverter"
+                                        required="true"
+                                        requiredMessage="Veiculo e obrigatorio"
+                                        style="width: 100%">
+                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                            <f:selectItems value="#{passagemBean.veiculos}"
+                                          var="v"
+                                          itemValue="#{v}"
+                                          itemLabel="#{v.numero} - #{v.placa} (#{v.qtdPoltronas} poltronas)"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="editPoltrona" value="Poltrona:"/>
+                        <p:inputNumber id="editPoltrona"
+                                      value="#{passagemBean.passagem.poltrona}"
+                                      required="true"
+                                      requiredMessage="Numero da poltrona e obrigatorio"
+                                      decimalPlaces="0"
+                                      minValue="1"
+                                      style="width: 100%"/>
+
+                        <p:outputLabel for="editDataSaida" value="Data de Saida:"/>
+                        <p:calendar id="editDataSaida"
+                                   value="#{passagemBean.passagem.dataSaida}"
+                                   pattern="dd/MM/yyyy"
+                                   required="true"
+                                   requiredMessage="Data de saida e obrigatoria"
+                                   showButtonBar="true"
+                                   locale="pt_BR"
+                                   style="width: 100%"/>
+
+                        <p:outputLabel for="editHoraSaida" value="Hora de Saida:"/>
+                        <p:inputMask id="editHoraSaida"
+                                    value="#{passagemBean.passagem.horaSaida}"
+                                    mask="99:99"
+                                    required="true"
+                                    requiredMessage="Hora de saida e obrigatoria"
+                                    placeholder="HH:MM"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editCidadeOrigem" value="Cidade Origem:"/>
+                        <p:selectOneMenu id="editCidadeOrigem"
+                                        value="#{passagemBean.passagem.cidadeOrigem}"
+                                        converter="omnifaces.SelectItemsConverter"
+                                        required="true"
+                                        requiredMessage="Cidade de origem e obrigatoria"
+                                        style="width: 100%"
+                                        filter="true"
+                                        filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                            <f:selectItems value="#{passagemBean.cidades}"
+                                          var="c"
+                                          itemValue="#{c}"
+                                          itemLabel="#{c.nomeCidade} - #{c.uf}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="editCidadeDestino" value="Cidade Destino:"/>
+                        <p:selectOneMenu id="editCidadeDestino"
+                                        value="#{passagemBean.passagem.cidadeDestino}"
+                                        converter="omnifaces.SelectItemsConverter"
+                                        required="true"
+                                        requiredMessage="Cidade de destino e obrigatoria"
+                                        style="width: 100%"
+                                        filter="true"
+                                        filterMatchMode="contains">
+                            <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                            <f:selectItems value="#{passagemBean.cidades}"
+                                          var="c"
+                                          itemValue="#{c}"
+                                          itemLabel="#{c.nomeCidade} - #{c.uf}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="editValorPassagem" value="Valor da Passagem:"/>
+                        <p:inputNumber id="editValorPassagem"
+                                      value="#{passagemBean.passagem.valorPassagem}"
+                                      required="true"
+                                      requiredMessage="Valor da passagem e obrigatorio"
+                                      symbol="R$ "
+                                      decimalSeparator=","
+                                      thousandSeparator="."
+                                      minValue="0"
+                                      style="width: 100%"/>
+
+                        <p:outputLabel for="editStatus" value="Status:"/>
+                        <p:selectOneRadio id="editStatus"
+                                         value="#{passagemBean.passagem.vendida}"
+                                         layout="grid"
+                                         columns="2">
+                            <f:selectItem itemLabel="Disponivel" itemValue="#{false}"/>
+                            <f:selectItem itemLabel="Vendida" itemValue="#{true}"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Salvar"
+                                        action="#{passagemBean.salvar()}"
+                                        update=":form:dataTable :form:messages"
+                                        oncomplete="PF('editDialogPassagem').hide()"
+                                        icon="pi pi-check"
+                                        styleClass="ui-button-success"/>
+
+                        <p:commandButton value="Cancelar"
+                                        onclick="PF('editDialogPassagem').hide()"
+                                        type="button"
+                                        icon="pi pi-times"
+                                        styleClass="ui-button-secondary"/>
+                    </f:facet>
+                </h:form>
+            </p:dialog>
         </div>
     </ui:define>
 </ui:composition>

@@ -49,4 +49,21 @@ public class CidadeDAO extends GenericDAO<Cidade, Long> {
             em.close();
         }
     }
+
+    /**
+     * Verifica se a cidade possui passagens cadastradas (origem ou destino)
+     */
+    public boolean temPassagens(Long cidadeId) {
+        EntityManager em = getEntityManager();
+        try {
+            String jpql = "SELECT COUNT(p) FROM Passagem p " +
+                         "WHERE p.cidadeOrigem.id = :cidadeId OR p.cidadeDestino.id = :cidadeId";
+            TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+            query.setParameter("cidadeId", cidadeId);
+            Long count = query.getSingleResult();
+            return count > 0;
+        } finally {
+            em.close();
+        }
+    }
 }

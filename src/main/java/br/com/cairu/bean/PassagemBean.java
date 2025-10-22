@@ -163,6 +163,10 @@ public class PassagemBean implements Serializable {
         passagem = new Passagem();
     }
 
+    public void prepararEdicao(Passagem passagem) {
+        this.passagem = passagem;
+    }
+
     private void addMessage(String mensagem, FacesMessage.Severity severity) {
         FacesContext.getCurrentInstance().addMessage(null,
             new FacesMessage(severity, mensagem, null));
