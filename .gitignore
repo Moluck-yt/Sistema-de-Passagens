@@ -85,3 +85,4 @@ Thumbs.db
 # Docker
 .env
 !.env.example
+.claude
