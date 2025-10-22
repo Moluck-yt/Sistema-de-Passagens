@@ -120,27 +120,27 @@ O projeto segue os padrões **MVC (Model-View-Controller)** e **Multi-Tier Archi
 ```
 ┌─────────────────────────────────────────────────┐
 │                   FRONTEND                      │
-│         (JSF/XHTML + PrimeFaces)               │
+│         (JSF/XHTML + PrimeFaces)                │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
 │                 CONTROLLER                      │
-│            (Managed Beans - CDI)               │
+│            (Managed Beans - CDI)                │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
 │               BUSINESS LOGIC                    │
-│           (Validações e Regras)                │
+│           (Validações e Regras)                 │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
 │              DATA ACCESS (DAO)                  │
-│            (GenericDAO + Specific DAOs)        │
+│            (GenericDAO + Specific DAOs)         │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
 │               PERSISTENCE                       │
-│            (JPA/Hibernate + MySQL)             │
+│            (JPA/Hibernate + MySQL)              │
 └─────────────────────────────────────────────────┘
 ```
 
