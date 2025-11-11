@@ -20,7 +20,7 @@
     --accent-orange: #f59e0b;
     --accent-red: #ef4444;
 
-    /* Cores neutras */
+    /* Cores neutras - Tema Claro */
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -28,6 +28,13 @@
     --gray-600: #4b5563;
     --gray-700: #374151;
     --gray-800: #1f2937;
+
+    /* Background e texto */
+    --bg-primary: #f9fafb;
+    --bg-secondary: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
 
     /* Sombras */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -40,12 +47,45 @@
     --transition-normal: all 0.3s ease;
 }
 
+/* Tema Escuro */
+[data-theme="dark"] {
+    /* Cores principais ajustadas */
+    --primary-blue: #3b82f6;
+    --primary-blue-light: #60a5fa;
+    --primary-blue-dark: #2563eb;
+    --secondary-green: #34d399;
+    --secondary-green-light: #6ee7b7;
+
+    /* Cores neutras - Tema Escuro */
+    --gray-50: #18181b;
+    --gray-100: #27272a;
+    --gray-200: #3f3f46;
+    --gray-300: #52525b;
+    --gray-600: #a1a1aa;
+    --gray-700: #d4d4d8;
+    --gray-800: #e4e4e7;
+
+    /* Background e texto */
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --text-primary: #e4e4e7;
+    --text-secondary: #a1a1aa;
+    --border-color: #3f3f46;
+
+    /* Sombras mais sutis */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+}
+
 body {
     font-family: 'Inter', 'Segoe UI', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
-    color: var(--gray-800);
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--gray-100) 100%);
+    color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -149,7 +189,7 @@ body {
    MENU DE NAVEGAÇÃO MODERNO
    ============================================ */
 .nav-menu {
-    background: white;
+    background: var(--bg-secondary);
     box-shadow: var(--shadow-md);
     margin-bottom: 30px;
     border-bottom: 3px solid var(--primary-blue-light);
@@ -174,7 +214,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 18px 24px;
-    color: var(--gray-700);
+    color: var(--text-primary);
     text-decoration: none;
     transition: var(--transition-normal);
     font-weight: 600;
@@ -209,13 +249,13 @@ body {
    CARDS MODERNOS
    ============================================ */
 .card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
     padding: 30px;
     margin-bottom: 25px;
     transition: var(--transition-normal);
-    border: 1px solid var(--gray-200);
+    border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
 }
@@ -273,12 +313,12 @@ body {
 }
 
 .feature-card {
-    background: white;
+    background: var(--bg-secondary);
     border-radius: 16px;
     padding: 30px;
     text-align: center;
     transition: var(--transition-normal);
-    border: 2px solid var(--gray-200);
+    border: 2px solid var(--border-color);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -320,12 +360,12 @@ body {
 .feature-card h3 {
     font-size: 20px;
     font-weight: 700;
-    color: var(--gray-800);
+    color: var(--text-primary);
     margin-bottom: 12px;
 }
 
 .feature-card p {
-    color: var(--gray-600);
+    color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -341,7 +381,7 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: var(--gray-700);
+    color: var(--text-primary);
     font-size: 14px;
 }
 
@@ -561,21 +601,21 @@ body {
 .footer {
     text-align: center;
     padding: 30px 20px;
-    background: white;
+    background: var(--bg-secondary);
     margin-top: 50px;
     box-shadow: var(--shadow-lg);
     border-top: 3px solid var(--primary-blue-light);
 }
 
 .footer p {
-    color: var(--gray-600);
+    color: var(--text-secondary);
     font-size: 14px;
     margin: 5px 0;
 }
 
 .footer p:first-child {
     font-weight: 600;
-    color: var(--gray-800);
+    color: var(--text-primary);
     font-size: 15px;
 }
 
@@ -591,6 +631,316 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ============================================
+   ESTILOS TEMA ESCURO - PRIMEFACES
+   ============================================ */
+
+/* Panels no tema escuro */
+[data-theme="dark"] .ui-panel {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-panel .ui-panel-content {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-panel .ui-panel-titlebar {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Inputs no tema escuro */
+[data-theme="dark"] .ui-inputfield,
+[data-theme="dark"] .ui-inputtext,
+[data-theme="dark"] .ui-inputnumber-input,
+[data-theme="dark"] .ui-selectonemenu,
+[data-theme="dark"] .ui-calendar input {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-inputfield:focus,
+[data-theme="dark"] .ui-inputtext:focus {
+    background: var(--bg-secondary) !important;
+}
+
+/* Dropdowns no tema escuro */
+[data-theme="dark"] .ui-selectonemenu-panel,
+[data-theme="dark"] .ui-autocomplete-panel {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-selectonemenu-item,
+[data-theme="dark"] .ui-autocomplete-item {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-selectonemenu-item:hover,
+[data-theme="dark"] .ui-autocomplete-item:hover {
+    background: var(--gray-200) !important;
+}
+
+/* Tabelas no tema escuro */
+[data-theme="dark"] .ui-datatable,
+[data-theme="dark"] .ui-datatable-tablewrapper {
+    background: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .ui-datatable tbody td {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-datatable tbody tr:hover {
+    background: var(--gray-200) !important;
+}
+
+[data-theme="dark"] .ui-datatable .ui-paginator {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Messages no tema escuro */
+[data-theme="dark"] .ui-messages {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-messages-info {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: var(--primary-blue) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-messages-warn {
+    background: rgba(245, 158, 11, 0.2) !important;
+    border-color: var(--accent-orange) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-messages-error {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border-color: var(--accent-red) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-messages-success {
+    background: rgba(52, 211, 153, 0.2) !important;
+    border-color: var(--secondary-green) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Dialogs no tema escuro */
+[data-theme="dark"] .ui-dialog {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-dialog .ui-dialog-titlebar {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-dialog .ui-dialog-content {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Calendar no tema escuro */
+[data-theme="dark"] .ui-datepicker {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-datepicker .ui-datepicker-header {
+    background: var(--gray-200) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-datepicker table td {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-datepicker table td a {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-datepicker table td a:hover {
+    background: var(--gray-200) !important;
+}
+
+/* Labels e OutputLabels no tema escuro */
+[data-theme="dark"] .ui-outputlabel,
+[data-theme="dark"] label {
+    color: var(--text-primary) !important;
+}
+
+/* Fieldsets no tema escuro */
+[data-theme="dark"] .ui-fieldset {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-fieldset-legend {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Tags no tema escuro */
+[data-theme="dark"] .ui-tag {
+    background: var(--gray-200) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Divider no tema escuro */
+[data-theme="dark"] .ui-divider {
+    border-color: var(--border-color) !important;
+}
+
+/* PanelGrid no tema escuro */
+[data-theme="dark"] .ui-panelgrid {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-panelgrid td {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Confirmação de diálogo no tema escuro */
+[data-theme="dark"] .ui-confirm-dialog {
+    background: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .ui-confirm-dialog .ui-dialog-content {
+    color: var(--text-primary) !important;
+}
+
+/* Overlay panel no tema escuro */
+[data-theme="dark"] .ui-overlaypanel {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-overlaypanel .ui-overlaypanel-content {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Menu no tema escuro */
+[data-theme="dark"] .ui-menu {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .ui-menu .ui-menuitem-link {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .ui-menu .ui-menuitem-link:hover {
+    background: var(--gray-200) !important;
+}
+
+/* SelectOneRadio no tema escuro */
+[data-theme="dark"] .ui-selectoneradio label {
+    color: var(--text-primary) !important;
+}
+
+/* SelectBooleanCheckbox no tema escuro */
+[data-theme="dark"] .ui-chkbox-label {
+    color: var(--text-primary) !important;
+}
+
+/* Botões no tema escuro - Footer de panels */
+[data-theme="dark"] .ui-panel-footer {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Card title no tema escuro */
+[data-theme="dark"] .card-title {
+    color: var(--text-primary) !important;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Títulos h2, h3, h4 no tema escuro */
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5 {
+    color: var(--text-primary) !important;
+}
+
+/* Texto genérico no tema escuro */
+[data-theme="dark"] p,
+[data-theme="dark"] span {
+    color: var(--text-secondary) !important;
+}
+
+/* Strong no tema escuro */
+[data-theme="dark"] strong {
+    color: var(--text-primary) !important;
+}
+
+/* Facet header no tema escuro */
+[data-theme="dark"] .ui-panel-title {
+    color: white !important;
+}
+
+/* DataTable header no tema escuro */
+[data-theme="dark"] .ui-datatable-header {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* DataTable footer no tema escuro */
+[data-theme="dark"] .ui-datatable-footer {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* ============================================
+   BOTÃO DE ALTERNAR TEMA
+   ============================================ */
+.theme-toggle {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    padding: 10px 10px !important;
+    font-size: 18px !important;
+    border-radius: 50% !important;
+    width: 45px !important;
+    height: 45px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+    transform: rotate(180deg) scale(1.1) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.theme-toggle .ui-button-icon-left {
+    margin: 0 !important;
+    font-size: 20px !important;
 }
 
 /* ============================================

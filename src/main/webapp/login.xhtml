@@ -14,6 +14,9 @@
 <h:body>
     <f:view transient="true">
     <div class="login-container">
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Alternar tema" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+            <i id="theme-icon" class="pi pi-moon"></i>
+        </button>
         <div class="login-box">
             <div class="login-logo">
                 <i class="pi pi-briefcase"></i>
@@ -59,6 +62,51 @@
             </h:form>
         </div>
     </div>
+
+    <!-- Script para alternar tema -->
+    <script type="text/javascript">
+        //<![CDATA[
+        // Função para alternar tema
+        function toggleTheme() {
+            console.log('toggleTheme called');
+            const html = document.documentElement || document.getElementsByTagName('html')[0];
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            console.log('Current theme:', currentTheme, '-> New theme:', newTheme);
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const icon = document.getElementById('theme-icon');
+            if (icon) {
+                icon.className = theme === 'dark' ? 'pi pi-sun' : 'pi pi-moon';
+                console.log('Icon updated to:', icon.className);
+            }
+        }
+
+        // Carregar tema salvo ao iniciar
+        (function() {
+            const html = document.documentElement || document.getElementsByTagName('html')[0];
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            console.log('Loading saved theme:', savedTheme);
+            html.setAttribute('data-theme', savedTheme);
+
+            // Aguardar DOM carregar para atualizar ícone
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    updateThemeIcon(savedTheme);
+                });
+            } else {
+                updateThemeIcon(savedTheme);
+            }
+        })();
+        //]]>
+    </script>
+
     </f:view>
 </h:body>
 </html>
