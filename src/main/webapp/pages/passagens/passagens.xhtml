@@ -101,6 +101,23 @@
                                       thousandSeparator="."
                                       minValue="0"
                                       style="width: 100%"/>
+
+                        <p:outputLabel for="nomeComprador" value="Nome do Comprador:"/>
+                        <p:inputText id="nomeComprador"
+                                    value="#{passagemBean.passagem.nomeComprador}"
+                                    required="true"
+                                    requiredMessage="Nome do comprador é obrigatório"
+                                    placeholder="Digite o nome completo"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="cpfComprador" value="CPF do Comprador:"/>
+                        <p:inputMask id="cpfComprador"
+                                    value="#{passagemBean.passagem.cpfComprador}"
+                                    mask="999.999.999-99"
+                                    required="true"
+                                    requiredMessage="CPF do comprador é obrigatório"
+                                    placeholder="000.000.000-00"
+                                    style="width: 100%"/>
                     </h:panelGrid>
 
                     <f:facet name="footer">
@@ -166,6 +183,16 @@
                         <h:outputText value="#{passagem.valorPassagem}">
                             <f:convertNumber type="currency" currencySymbol="R$ "/>
                         </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Comprador" sortBy="#{passagem.nomeComprador}">
+                        <h:outputText value="#{passagem.nomeComprador}" rendered="#{passagem.nomeComprador != null}"/>
+                        <h:outputText value="-" rendered="#{passagem.nomeComprador == null}" style="color: #999;"/>
+                    </p:column>
+
+                    <p:column headerText="CPF">
+                        <h:outputText value="#{passagem.cpfComprador}" rendered="#{passagem.cpfComprador != null}"/>
+                        <h:outputText value="-" rendered="#{passagem.cpfComprador == null}" style="color: #999;"/>
                     </p:column>
 
                     <p:column headerText="Status">
@@ -284,6 +311,23 @@
                                       thousandSeparator="."
                                       minValue="0"
                                       style="width: 100%"/>
+
+                        <p:outputLabel for="editNomeComprador" value="Nome do Comprador:"/>
+                        <p:inputText id="editNomeComprador"
+                                    value="#{passagemBean.passagem.nomeComprador}"
+                                    required="true"
+                                    requiredMessage="Nome do comprador e obrigatorio"
+                                    placeholder="Digite o nome completo"
+                                    style="width: 100%"/>
+
+                        <p:outputLabel for="editCpfComprador" value="CPF do Comprador:"/>
+                        <p:inputMask id="editCpfComprador"
+                                    value="#{passagemBean.passagem.cpfComprador}"
+                                    mask="999.999.999-99"
+                                    required="true"
+                                    requiredMessage="CPF do comprador e obrigatorio"
+                                    placeholder="000.000.000-00"
+                                    style="width: 100%"/>
 
                         <p:outputLabel for="editStatus" value="Status:"/>
                         <p:selectOneRadio id="editStatus"

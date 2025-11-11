@@ -58,6 +58,12 @@ public class Passagem implements Serializable {
     @Column(name = "dataVenda")
     private Date dataVenda;
 
+    @Column(name = "nomeComprador", length = 100)
+    private String nomeComprador;
+
+    @Column(name = "cpfComprador", length = 14)
+    private String cpfComprador;
+
     // Construtores
     public Passagem() {
     }
@@ -152,6 +158,22 @@ public class Passagem implements Serializable {
 
     public void setDataVenda(Date dataVenda) {
         this.dataVenda = dataVenda;
+    }
+
+    public String getNomeComprador() {
+        return nomeComprador;
+    }
+
+    public void setNomeComprador(String nomeComprador) {
+        this.nomeComprador = nomeComprador;
+    }
+
+    public String getCpfComprador() {
+        return cpfComprador;
+    }
+
+    public void setCpfComprador(String cpfComprador) {
+        this.cpfComprador = cpfComprador;
     }
 
     public String getRoteiro() {

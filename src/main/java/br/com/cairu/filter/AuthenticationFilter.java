@@ -76,7 +76,8 @@ public class AuthenticationFilter implements Filter {
     private boolean isPaginaPublica(String requestURI) {
         return requestURI.contains("login.xhtml") ||
                requestURI.endsWith("/") ||
-               requestURI.contains("javax.faces.resource");
+               requestURI.contains("javax.faces.resource") ||
+               requestURI.contains("jakarta.faces.resource");
     }
 
     /**
