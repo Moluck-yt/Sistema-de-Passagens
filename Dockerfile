@@ -45,6 +45,21 @@ RUN unzip -q passagens-rodoviarias.war -d passagens-rodoviarias && \
 # Voltar para o diretório do Tomcat
 WORKDIR /usr/local/tomcat
 
+# Criar diretório ROOT e página de redirecionamento
+RUN mkdir -p /usr/local/tomcat/webapps/ROOT && \
+    echo '<!DOCTYPE html>' > /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '<html>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '<head>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '    <meta charset="UTF-8">' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '    <meta http-equiv="refresh" content="0; url=/passagens-rodoviarias/">' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '    <title>Redirecionando...</title>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '</head>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '<body>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '    <p>Redirecionando para o Sistema de Passagens Rodoviárias...</p>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '    <p>Se não for redirecionado automaticamente, <a href="/passagens-rodoviarias/">clique aqui</a>.</p>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '</body>' >> /usr/local/tomcat/webapps/ROOT/index.html && \
+    echo '</html>' >> /usr/local/tomcat/webapps/ROOT/index.html
+
 # Expor porta 8080
 EXPOSE 8080
 
